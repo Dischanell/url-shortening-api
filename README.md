@@ -19,7 +19,7 @@ Tired of long URLs? The URL Shortening API lets you create concise links that re
 
 1. Clone the repository
 ```
-git clone
+git clone https://github.com/Dischanell/url-shortening-api.git
 ```
 
 2. Install the dependencies
