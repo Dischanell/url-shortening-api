@@ -1,3 +1,4 @@
+import { UserNotFoundError, ValidationError } from '../errors.ts'
 import { UserModel } from '../models/user.ts'
 import { validateUser, validatePartialUser } from '../schemas/zod/user.ts'
 
@@ -11,6 +12,7 @@ export class UserController {
       const response = await UserModel.register(validatedInput.data)
       res.status(201).json(response)
     } catch (e) {
+      if (e instanceof ValidationError) res.status(400).json({ error: e.message })
       res.status(400).json({ error: e.message })
     }
   }
@@ -22,9 +24,10 @@ export class UserController {
     if (!validatedInput.success) return res.status(400).json({ error: JSON.parse(validatedInput.error.message) })
 
     try {
-      const response = await UserModel.update(id, validatedInput.data)
-      res.status(200).json(response)
+      await UserModel.update(id, validatedInput.data)
+      res.status(204).send()
     } catch (e) {
+      if (e instanceof UserNotFoundError) res.status(404).json({ error: e.message })
       res.status(400).json({ error: e.message })
     }
   }
@@ -33,9 +36,10 @@ export class UserController {
     const { id } = req.params
 
     try {
-      const response = await UserModel.delete(id)
-      res.status(204).json(response)
+      await UserModel.delete(id)
+      res.status(204).send()
     } catch (e) {
+      if (e instanceof UserNotFoundError) res.status(404).json({ error: e.message })
       res.status(400).json({ error: e.message })
     }
   }

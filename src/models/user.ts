@@ -1,4 +1,5 @@
 import { User } from '../schemas/mongodb/user.ts'
+import { UserNotFoundError } from '../errors.ts'
 
 export class UserModel {
   static async register (input: { email: string; password: string }) {
@@ -13,20 +14,18 @@ export class UserModel {
   }
 
   static async update (id: string, input: { email?: string, password?: string }) {
+
     const user = await User.findOne({ _id: id })
-    if (!user) throw Error('User not found')
+    if (!user) throw new UserNotFoundError('user not found')
 
     await user.updateOne(input)
-
-    return input
   }
 
   static async delete (id) {
+
     const user = await User.findOne({ _id: id })
-    if (!user) throw Error('User not found')
+    if (!user) throw new UserNotFoundError('user not found')
 
     await user.deleteOne()
-
-    return {}
   }
 }
