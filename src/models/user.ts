@@ -1,11 +1,11 @@
 import { User } from '../schemas/mongodb/user.ts'
-import { UserNotFoundError } from '../errors.ts'
+import { UserNotFoundError, DuplicateEmailError } from '../errors.ts'
 
 export class UserModel {
   static async register (input: { email: string; password: string }) {
 
-    const userExists = await User.findOne({ email: input.email })
-    if (userExists) throw Error('This email has already been registered')
+    const emailExists = await User.findOne({ email: input.email })
+    if (emailExists) throw new DuplicateEmailError('duplicate email')
 
     const user = new User(input)
     const { _id: insertedId } = await user.save()
@@ -18,7 +18,13 @@ export class UserModel {
     const user = await User.findOne({ _id: id })
     if (!user) throw new UserNotFoundError('user not found')
 
-    await user.updateOne(input)
+    const emailExists = await User.findOne({ email: input.email })
+    if (emailExists) throw new DuplicateEmailError('duplicate email')
+
+    if (input.email) user.email = input.email
+    if (input.password) user.password = input.password
+
+    await user.save()
   }
 
   static async delete (id) {

@@ -18,3 +18,10 @@ export class UserNotFoundError extends Error {
 		this.name = 'UserNotFoundError'
 	}
 }
+
+export class DuplicateEmailError extends Error {
+	constructor(message: string | undefined) {
+		super(message)
+		this.name = 'DuplicateEmailError'
+	}
+}

@@ -8,7 +8,7 @@ export async function connectToDatabase(){
     await connect(MONGODB_URI)
     console.log('Connected to MongoDB')
   } catch (e) {
-      console.error(`Error connecting to MongoDB: ${e}`)
-      throw e
+    console.error(`Error connecting to MongoDB: ${e}`)
+    throw e
   }
 }

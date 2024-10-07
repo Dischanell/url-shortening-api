@@ -1,4 +1,4 @@
-import { UserNotFoundError, ValidationError } from '../errors.ts'
+import { DuplicateEmailError, UserNotFoundError } from '../errors.ts'
 import { UserModel } from '../models/user.ts'
 import { validateUser, validatePartialUser } from '../schemas/zod/user.ts'
 
@@ -10,14 +10,19 @@ export class UserController {
 
     try {
       const response = await UserModel.register(validatedInput.data)
+
       res.status(201).json(response)
     } catch (e) {
-      if (e instanceof ValidationError) res.status(400).json({ error: e.message })
-      res.status(400).json({ error: e.message })
+      if (e instanceof DuplicateEmailError) {
+        res.status(409).json({ error: e.message })
+      } else {
+        res.status(500).json({ error: e.message })
+      }      
     }
   }
 
   static async update (req, res) {
+
     const { id } = req.params
 
     const validatedInput = validatePartialUser(req.body)
@@ -27,12 +32,18 @@ export class UserController {
       await UserModel.update(id, validatedInput.data)
       res.status(204).send()
     } catch (e) {
-      if (e instanceof UserNotFoundError) res.status(404).json({ error: e.message })
-      res.status(400).json({ error: e.message })
+      if (e instanceof UserNotFoundError) {
+        res.status(404).json({ error: e.message })
+      } else if (e instanceof DuplicateEmailError) {
+        res.status(409).json({ error: e.message })
+      } else {
+        res.status(500).json({ error: e.message })
+      } 
     }
   }
 
   static async delete (req, res) {
+    
     const { id } = req.params
 
     try {
@@ -40,7 +51,7 @@ export class UserController {
       res.status(204).send()
     } catch (e) {
       if (e instanceof UserNotFoundError) res.status(404).json({ error: e.message })
-      res.status(400).json({ error: e.message })
+      res.status(500).json({ error: e.message })
     }
   }
 }
