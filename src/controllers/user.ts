@@ -1,6 +1,6 @@
 import { DuplicateEmailError, UserNotFoundError } from '../errors.ts'
 import { UserModel } from '../models/user.ts'
-import { validateUser, validatePartialUser } from '../schemas/zod/user.ts'
+import { validateUser, validatePartialUser } from '../schemas/zod/userInput.ts'
 
 export class UserController {
   static async register (req, res) {

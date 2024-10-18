@@ -5,17 +5,24 @@ export class ConnectionError extends Error {
 	}
 }
 
-export class ValidationError extends Error {
-	constructor(message: string | undefined) {
-		super(message)
-		this.name = 'ValidationError'
-	}
-}
-
 export class UserNotFoundError extends Error {
 	constructor(message: string | undefined) {
 		super(message)
 		this.name = 'UserNotFoundError'
+	}
+}
+
+export class SessionNotFoundError extends Error {
+	constructor(message: string | undefined) {
+		super(message)
+		this.name = 'SessionNotFoundError'
+	}
+}
+
+export class InvalidLoginError extends Error {
+	constructor(message: string | undefined) {
+		super(message)
+		this.name = 'InvalidLoginError'
 	}
 }
 
