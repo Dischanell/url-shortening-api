@@ -17,7 +17,7 @@ export class UserController {
         res.status(409).json({ error: e.message })
       } else {
         res.status(500).json({ error: e.message })
-      }      
+      }
     }
   }
 
@@ -50,8 +50,11 @@ export class UserController {
       await UserModel.delete(id)
       res.status(204).send()
     } catch (e) {
-      if (e instanceof UserNotFoundError) res.status(404).json({ error: e.message })
-      res.status(500).json({ error: e.message })
+      if (e instanceof UserNotFoundError) {
+        res.status(404).json({ error: e.message });
+      } else {
+        res.status(500).json({ error: e.message });
+      }
     }
   }
 }

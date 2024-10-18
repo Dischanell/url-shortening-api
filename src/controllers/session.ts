@@ -15,8 +15,11 @@ export class SessionController {
 
       res.status(201).json(response)
     } catch (e) {
-      if (e instanceof InvalidLoginError) res.status(401).json({ error: e.message })
-      res.status(500).json({ error: e.message })
+      if (e instanceof InvalidLoginError) {
+        res.status(401).json({ error: e.message });
+      } else {
+        res.status(500).json({ error: e.message });
+      }
     }
   }
 
@@ -32,8 +35,11 @@ export class SessionController {
 
       res.status(204).send()
     } catch (e) {
-      if (e instanceof SessionNotFoundError) res.status(404).json({ error: e.message })
-      res.status(500).json({ error: e.message })
+      if (e instanceof SessionNotFoundError) {
+        res.status(404).json({ error: e.message });
+      } else {
+        res.status(500).json({ error: e.message });
+      }
     }
   }
 }
