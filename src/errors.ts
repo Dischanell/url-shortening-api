@@ -19,6 +19,13 @@ export class SessionNotFoundError extends Error {
 	}
 }
 
+export class UrlNotFoundError extends Error {
+	constructor(message: string | undefined) {
+		super(message)
+		this.name = 'UrlNotFoundError'
+	}
+}
+
 export class InvalidLoginError extends Error {
 	constructor(message: string | undefined) {
 		super(message)

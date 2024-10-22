@@ -10,4 +10,4 @@ router.use('/users', userRouter)
 router.use('/sessions', sessionRouter)
 router.use('/urls', urlRouter)
 
-router.get('/:short_id', UrlController.redirect)
+router.get('/:shortId', UrlController.redirect)
